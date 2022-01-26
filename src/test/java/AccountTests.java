@@ -85,7 +85,6 @@ public class AccountTests extends BaseTest {
                 .when()
                 .get("https://api.imgur.com/3/account/{username}", username)
                 .prettyPeek();
-
     }
 
     @Test
@@ -138,7 +137,5 @@ public class AccountTests extends BaseTest {
                 .response()
                 .jsonPath()
                 .getString("data.id");
-
     }
-
 }
