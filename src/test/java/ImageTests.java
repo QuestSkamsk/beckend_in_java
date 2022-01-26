@@ -10,7 +10,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 
 public class ImageTests extends BaseTest {
 
-    private final String PATH_TO_IMAGE = "src/test/resources/3WzKURV.jpg";
+    private final String PATH_TO_IMAGE = "src/test/resources/Dragon.jpg";
     static String encodedFile;
     String addedImageId;
 
