@@ -22,8 +22,7 @@ public class ImageTests extends BaseTest {
 
     @Test
     void postAddImageTest(){
-        addedImageId = given()
-                .header("Authorization", token)
+        addedImageId = given(requestSpecification)
                 .multiPart("image", encodedFile)
                 .formParam("title", "act")
                 .log()
@@ -34,10 +33,10 @@ public class ImageTests extends BaseTest {
                 .body("success", is(true))
                 .body("data.id", is(notNullValue()))
                 .when()
-                .post("https://api.imgur.com/3/image")
+                .post("/image")
                 .prettyPeek()
                 .then()
-                .statusCode(200)
+                .spec(responseSpecification)
                 .extract()
                 .response()
                 .jsonPath()
@@ -46,8 +45,7 @@ public class ImageTests extends BaseTest {
 
     @Test
     void postAddImageFaviritesTest(){
-        addedImageId = given()
-                .header("Authorization", token)
+        addedImageId = given(requestSpecification)
                 .multiPart("image", encodedFile)
                 .formParam("title", "act")
                 .log()
@@ -58,10 +56,10 @@ public class ImageTests extends BaseTest {
                 .body("success", is(true))
                 .body("data.id", is(notNullValue()))
                 .when()
-                .post("https://api.imgur.com/3/image")
+                .post("/image")
                 .prettyPeek()
                 .then()
-                .statusCode(200)
+                .spec(responseSpecification)
                 .extract()
                 .response()
                 .jsonPath()
@@ -70,17 +68,16 @@ public class ImageTests extends BaseTest {
     }
 
     void addFavirites(){
-        given()
-                .header("Authorization", token)
+        given(requestSpecification)
                 .log()
                 .method()
                 .log()
                 .uri()
                 .when()
-                .post("https://api.imgur.com/3/image/{imageHash}/favorite", addedImageId)
+                .post("/image/{imageHash}/favorite", addedImageId)
                 .prettyPeek()
                 .then()
-                .statusCode(200);
+                .spec(responseSpecification);
     }
 
     @Test
@@ -101,16 +98,15 @@ public class ImageTests extends BaseTest {
 
     @AfterEach
     void takeDown(){
-        given()
-                .header("Authorization", token)
+        given(requestSpecification)
                 .log()
                 .method()
                 .log()
                 .uri()
                 .when()
-                .delete("https://api.imgur.com/3/account/{username}/image/{deleteHash}", username, addedImageId)
+                .delete("/account/{username}/image/{deleteHash}", username, addedImageId)
                 .prettyPeek()
                 .then()
-                .statusCode(200);
+                .spec(responseSpecification);
     }
 }

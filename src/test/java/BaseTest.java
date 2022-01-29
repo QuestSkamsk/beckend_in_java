@@ -1,5 +1,12 @@
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
+
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,6 +18,8 @@ public class BaseTest {
     static String token;
     static String username;
     static String imageHash;
+    static ResponseSpecification responseSpecification;
+    static RequestSpecification requestSpecification;
 
     @BeforeAll
     static void beforeAll() {
@@ -20,6 +29,19 @@ public class BaseTest {
         token = properties.getProperty("token");
         username = properties.getProperty("username");
         imageHash = properties.getProperty("imageHash");
+
+        responseSpecification = new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .expectStatusLine("HTTP/1.1 200 OK")
+                .expectResponseTime(Matchers.lessThan(5000L))
+                .expectContentType(ContentType.JSON)
+                .build();
+
+        requestSpecification = new RequestSpecBuilder()
+                .addHeader("Authorization", token)
+                .setBaseUri("https://api.imgur.com/3")
+                .build();
+
     }
 
     private static void getProperties() {
